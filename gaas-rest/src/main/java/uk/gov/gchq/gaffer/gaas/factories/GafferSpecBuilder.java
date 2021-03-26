@@ -26,13 +26,18 @@ import uk.gov.gchq.gaffer.proxystore.ProxyProperties;
 import uk.gov.gchq.gaffer.proxystore.ProxyStore;
 import uk.gov.gchq.gaffer.sketches.serialisation.json.SketchesJsonModules;
 import uk.gov.gchq.gaffer.store.StoreProperties;
+import uk.gov.gchq.gaffer.store.library.GraphLibrary;
+import uk.gov.gchq.gaffer.store.library.HashMapGraphLibrary;
+import uk.gov.gchq.gaffer.store.schema.Schema;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GafferSpecBuilder {
 
     private String graphId;
     private String description;
+    private GraphLibrary library;
     private Map<String, Object> storeProperties;
     private boolean accumuloIsEnabled;
 
@@ -43,6 +48,17 @@ public class GafferSpecBuilder {
 
     public GafferSpecBuilder description(final String description) {
         this.description = description;
+        return this;
+    }
+
+    public GafferSpecBuilder library(final List<String> urls) {
+        final HashMapGraphLibrary library = new HashMapGraphLibrary();
+        final ProxyProperties properties = new ProxyProperties();
+        properties.setGafferHost("localhost:8080");
+        properties.setGafferContextRoot("/rest");
+        library.add("proxy_store_1", new Schema.Builder().build(), properties);
+
+        this.library = library;
         return this;
     }
 
@@ -82,6 +98,7 @@ public class GafferSpecBuilder {
         final GafferSpec gafferSpec = new GafferSpec();
         gafferSpec.putNestedObject(graphId, "graph", "config", "graphId");
         gafferSpec.putNestedObject(description, "graph", "config", "description");
+        gafferSpec.putNestedObject(library, "graph", "config", "library");
         gafferSpec.putNestedObject(storeProperties, "graph", "storeProperties");
 
         if (accumuloIsEnabled && storeProperties != null) {

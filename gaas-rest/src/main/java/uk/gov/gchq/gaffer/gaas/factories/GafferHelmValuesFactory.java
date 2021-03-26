@@ -21,6 +21,8 @@ import uk.gov.gchq.gaffer.controller.model.v1.Gaffer;
 import uk.gov.gchq.gaffer.controller.model.v1.GafferSpec;
 import uk.gov.gchq.gaffer.gaas.model.GaaSCreateRequestBody;
 import uk.gov.gchq.gaffer.gaas.model.StoreType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GafferHelmValuesFactory is a factory class that creates a Gaffer Helm Values Object that can be passed to the
@@ -53,6 +55,8 @@ public final class GafferHelmValuesFactory {
     private static GafferSpec createGafferSpecFrom(final GaaSCreateRequestBody graph) {
         final StoreType storeType = graph.getStoreType();
 
+        final List<String> strings = new ArrayList<>();
+
         switch (storeType) {
             case ACCUMULO:
                 return new GafferSpecBuilder()
@@ -61,6 +65,12 @@ public final class GafferHelmValuesFactory {
                         .enableAccumulo()
                         .build();
             case FEDERATED_STORE:
+                return new GafferSpecBuilder()
+                        .graphId(graph.getGraphId())
+                        .description(graph.getDescription())
+                        .library(strings)
+                        .storeProperties(storeType)
+                        .build();
             case MAPSTORE:
                 return new GafferSpecBuilder()
                         .graphId(graph.getGraphId())
