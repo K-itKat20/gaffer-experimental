@@ -51,16 +51,16 @@ public class GafferSpecBuilder {
         return this;
     }
 
-    public GafferSpecBuilder library(final List<String> urls) {
-        final HashMapGraphLibrary library = new HashMapGraphLibrary();
-        final ProxyProperties properties = new ProxyProperties();
-        properties.setGafferHost("localhost:8080");
-        properties.setGafferContextRoot("/rest");
-        library.add("proxy_store_1", new Schema.Builder().build(), properties);
-
-        this.library = library;
-        return this;
-    }
+//    public GafferSpecBuilder library(final List<String> urls) {
+//        final HashMapGraphLibrary library = new HashMapGraphLibrary();
+//        final ProxyProperties properties = new ProxyProperties();
+//        properties.setGafferHost("localhost:8080");
+//        properties.setGafferContextRoot("/rest");
+//        library.add("proxy_store_1", new Schema.Builder().build(), properties);
+//
+//        this.library = library;
+//        return this;
+//    }
 
     public GafferSpecBuilder storeProperties(final StoreType storeType) {
         return storeProperties(storeType, null, null);

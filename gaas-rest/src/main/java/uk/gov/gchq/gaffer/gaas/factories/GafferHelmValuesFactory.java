@@ -65,12 +65,6 @@ public final class GafferHelmValuesFactory {
                         .enableAccumulo()
                         .build();
             case FEDERATED_STORE:
-                return new GafferSpecBuilder()
-                        .graphId(graph.getGraphId())
-                        .description(graph.getDescription())
-                        .library(strings)
-                        .storeProperties(storeType)
-                        .build();
             case MAPSTORE:
                 return new GafferSpecBuilder()
                         .graphId(graph.getGraphId())
