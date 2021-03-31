@@ -56,6 +56,7 @@ public final class GafferHelmValuesFactory {
         final StoreType storeType = graph.getStoreType();
 
         final List<String> strings = new ArrayList<>();
+        strings.add("http://test.com");
 
         switch (storeType) {
             case ACCUMULO:
@@ -65,6 +66,12 @@ public final class GafferHelmValuesFactory {
                         .enableAccumulo()
                         .build();
             case FEDERATED_STORE:
+                return new GafferSpecBuilder()
+                        .graphId(graph.getGraphId())
+                        .description(graph.getDescription())
+                        .library(strings)
+                        .storeProperties(storeType)
+                        .build();
             case MAPSTORE:
                 return new GafferSpecBuilder()
                         .graphId(graph.getGraphId())
