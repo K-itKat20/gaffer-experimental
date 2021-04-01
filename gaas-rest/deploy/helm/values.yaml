@@ -15,7 +15,7 @@
 replicaCount: 1
 image:
   #Set the repository value below to your own
-  repository: kitkat520/api
+  repository: rocky341/april-1-key
   pullPolicy: IfNotPresent
   tag: latest
   containerPort: 8080
