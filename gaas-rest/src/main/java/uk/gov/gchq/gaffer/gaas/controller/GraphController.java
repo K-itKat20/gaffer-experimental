@@ -61,6 +61,7 @@ public class GraphController {
 
     @GetMapping(path = "/graphs", produces = "application/json")
     public ResponseEntity<List<GraphConfig>> getAllGraphs() throws GaaSRestApiException {
+        System.out.println("Inside graph");
         final List<GraphConfig> list = gafferService.getAllGraphs();
         return new ResponseEntity(list, HttpStatus.OK);
     }
