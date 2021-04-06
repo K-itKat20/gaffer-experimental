@@ -81,4 +81,9 @@ public class GraphController {
     public String getUserMessage() {
         return "Hello, User";
     }
+
+    @GetMapping(path = "/sometest")
+    public String getUserMessage2() {
+        return "Hello, Test";
+    }
 }
