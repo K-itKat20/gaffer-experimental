@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   #Ask about repository setting
-  repository: rocky341/apr7-ui    
+  repository: rocky341/apr8-ui
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: 'latest'
