@@ -4,6 +4,10 @@
     "ssl-required": "external",
     "resource": "gaas-rest",
     "verify-token-audience": true,
+    "enable-cors" : true,
+    "cors-max-age" : 1000,
+    "cors-allowed-methods" : "POST, PUT, DELETE, GET",
+    "cors-exposed-headers" : "WWW-Authenticate",
     "credentials": {
       "secret": "fb6eb8b3-7bb2-4fbf-b244-b9f664b7844a"
     },
