@@ -23,7 +23,7 @@ export class RestClient<T> {
     constructor() {
         this.url = "";
         this.method = "get";
-        this.headers = {};
+        this.headers = {"Access-Control-Allow-Origin": "*"};
         this.data = undefined;
     }
 
@@ -35,19 +35,11 @@ export class RestClient<T> {
     public graphs(pathVariable?: string): RestClient<T> {
         const _pathVariable = pathVariable ? `/${pathVariable}` : "";
         this.url = `/graphs${_pathVariable}`;
-        this.headers = { Authorization: "Bearer " + RestClient.jwtToken };
         return this;
     }
 
     public namespaces(): RestClient<T> {
         this.url = "/namespaces";
-        this.headers = { Authorization: "Bearer " + RestClient.jwtToken };
-        return this;
-    }
-
-    public authentication(pathVariable?: string): RestClient<T> {
-        const _pathVariable = pathVariable ? `/${pathVariable}` : "";
-        this.url = `/auth${_pathVariable}`;
         return this;
     }
 

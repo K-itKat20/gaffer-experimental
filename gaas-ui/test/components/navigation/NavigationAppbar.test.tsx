@@ -2,9 +2,7 @@ import { mount, ReactWrapper } from "enzyme";
 import NavigationAppbar from "../../../src/components/navigation-bar/NavigationAppbar";
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
-import { AuthApiClient } from "../../../src/rest/clients/auth-api-client";
 
-jest.mock("../../../src/rest/clients/auth-api-client");
 
 let component: ReactWrapper;
 
@@ -67,7 +65,6 @@ describe("Navigation Appbar Component", () => {
 
 describe("Display Signed In User Details", () => {
     it("should display the username & email of the User who signed in", () => {
-        mockAuthClient();
         inputUsername("Harry@gmail.com");
         inputPassword("asdfgh");
 
@@ -76,7 +73,6 @@ describe("Display Signed In User Details", () => {
         expect(component.find("div#signedin-user-details").text()).toBe("HarryHarry@gmail.com");
     });
     it("should display the non-email username of the User who signed in", () => {
-        mockAuthClient();
         inputUsername("Batman");
         inputPassword("zxcvb");
 
@@ -102,13 +98,4 @@ function inputPassword(password: string): void {
 
 function clickSubmitSignIn() {
     component.find("button#submit-sign-in-button").simulate("click");
-}
-
-function mockAuthClient() {
-    // @ts-ignore
-    AuthApiClient.prototype.login.mockImplementationOnce(
-        (username: string, password: string, onSuccess: () => void, onError: () => void) => {
-            onSuccess();
-        }
-    );
 }

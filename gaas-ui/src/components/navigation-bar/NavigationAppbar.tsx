@@ -20,7 +20,6 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import LocalLibraryIcon from "@material-ui/icons/LocalLibrary";
 import CategoryIcon from "@material-ui/icons/Category";
-import LoginModal from "../login/login-modal";
 
 const drawerWidth = 240;
 
