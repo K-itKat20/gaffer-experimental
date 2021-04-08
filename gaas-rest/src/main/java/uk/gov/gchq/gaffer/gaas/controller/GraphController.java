@@ -77,6 +77,7 @@ public class GraphController {
         final List<String> namespaces = getNamespacesService.getNamespaces();
         return new ResponseEntity(namespaces, HttpStatus.OK);
     }
+
     @GetMapping(path = "/message")
     public String getUserMessage() {
         return "Hello, User";
