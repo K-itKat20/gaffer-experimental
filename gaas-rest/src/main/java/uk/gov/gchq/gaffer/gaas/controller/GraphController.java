@@ -38,7 +38,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Component
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 public class GraphController {
 
