@@ -123,7 +123,7 @@ const NavigationAppbar: React.FC = (props: any) => {
                     <Typography variant="h6" className={classes.title}>
                         Kai: Graph As A Service
                     </Typography>
-                    <LoginModal onLogin={(username) => setUsername(username)} />
+                    {/* <LoginModal onLogin={(username) => setUsername(username)} /> */}
                 </Toolbar>
             </AppBar>
 

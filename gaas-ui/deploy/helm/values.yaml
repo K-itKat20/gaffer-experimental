@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   #Ask about repository setting
-  repository: gchq/gaas-ui
+  repository: rocky341/apr7-ui    
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: 'latest'
@@ -25,6 +25,6 @@ envConfigFile: "env-config.js"
 
 envVariables:
   reactAPIPlatform: "test"
-  kaiRestAPIHost: "http://kubernetes.host.co.uk/"
+  kaiRestAPIHost: "https://keycloak-rest-gaas-rest-kai-dev.apps.ocp1.purplesky.cloud/"
   cognitoUserpoolID: "us-east-1_uS3rPo0L1D"
   cognitoClientID: "c0gN1t0Id"
