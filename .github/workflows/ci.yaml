@@ -38,16 +38,14 @@ jobs:
     - name: Run tests
       run:
         npm run test
-
-  publish-images-to-dockerhub:
-    runs-on: ubuntu-latest
-
-    steps:
+        
     - name: Build & Publish images
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
-        ls
         echo ${DOCKER_USERNAME}
         docker version
+        docker build -t ${DOCKER_USERNAME}/gaas-ui:ci-build .
+        docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+        docker push ${DOCKER_USERNAME}/gaas-ui:ci-build
