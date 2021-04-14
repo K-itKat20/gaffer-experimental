@@ -8,11 +8,13 @@ import { StylesProvider } from "@material-ui/styles";
 import GlobalStyles from "../src/components/GlobalStyles";
 import "./styles/_App.scss";
 import Keycloak from "keycloak-js";
+import { RestClient } from "./rest/clients/rest-client";
 
 // eslint-disable-next-line new-cap
 const keycloak: Keycloak.KeycloakInstance = Keycloak();
 keycloak.init({ onLoad: "login-required" })
   .success(() => {
+RestClient.setJwtToken(keycloak.token)
 ReactDOM.render(
     <React.StrictMode>
         <StylesProvider injectFirst>

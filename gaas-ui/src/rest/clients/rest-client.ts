@@ -10,9 +10,9 @@ export interface IApiResponse<T = any> {
 }
 
 export class RestClient<T> {
-    private static jwtToken: string;
+    private static jwtToken: string | undefined;
 
-    public static setJwtToken(jwtToken: string) {
+    public static setJwtToken(jwtToken: string | undefined) {
         this.jwtToken = jwtToken;
     }
 
@@ -35,6 +35,7 @@ export class RestClient<T> {
     public graphs(pathVariable?: string): RestClient<T> {
         const _pathVariable = pathVariable ? `/${pathVariable}` : "";
         this.url = `/graphs${_pathVariable}`;
+         this.headers = { Authorization: "Bearer " + RestClient.jwtToken };
         return this;
     }
 
