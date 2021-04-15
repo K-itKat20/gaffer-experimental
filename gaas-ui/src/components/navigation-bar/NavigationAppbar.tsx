@@ -5,6 +5,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
     AppBar,
     Avatar,
+    Button,
     CssBaseline,
     Divider,
     Drawer,
@@ -20,6 +21,8 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import LocalLibraryIcon from "@material-ui/icons/LocalLibrary";
 import CategoryIcon from "@material-ui/icons/Category";
+import KeyCloakService  from "../../rest/key-cloak-service";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const drawerWidth = 240;
 
@@ -114,6 +117,8 @@ const NavigationAppbar: React.FC = (props: any) => {
 
     const buildUsername = () => (username.includes("@") ? username.slice(0, username.indexOf("@")) : username);
 
+     
+
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -122,9 +127,17 @@ const NavigationAppbar: React.FC = (props: any) => {
                     <Typography variant="h6" className={classes.title}>
                         Kai: Graph As A Service
                     </Typography>
-                    {/* <LoginModal onLogin={(username) => setUsername(username)} /> */}
+                    <Button
+                    id="sign-out-button"
+                    color="inherit"
+                    startIcon={<ExitToAppIcon />}
+                    onClick={() => KeyCloakService.doLogout()}
+                >
+                    Sign out
+                </Button>
                 </Toolbar>
             </AppBar>
+
 
             <nav className={classes.drawer}>
                 <Drawer

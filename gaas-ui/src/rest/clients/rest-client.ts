@@ -3,6 +3,7 @@ import status from "statuses";
 import { GaaSRestApiErrorResponse } from "../http-message-interfaces/error-response-interface";
 import { RestApiError } from "../RestApiError";
 import { Config } from "./../config";
+import KeyCloakService  from "../../rest/key-cloak-service";
 
 export interface IApiResponse<T = any> {
     status: number;
@@ -35,7 +36,7 @@ export class RestClient<T> {
     public graphs(pathVariable?: string): RestClient<T> {
         const _pathVariable = pathVariable ? `/${pathVariable}` : "";
         this.url = `/graphs${_pathVariable}`;
-         this.headers = { Authorization: "Bearer " + RestClient.jwtToken };
+         this.headers = { Authorization: "Bearer " + KeyCloakService.getToken()};
         return this;
     }
 

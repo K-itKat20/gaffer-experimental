@@ -1,6 +1,6 @@
 {
     "realm": "gaas-realm",
-    "auth-server-url": "https://keycloak-kai-dev.apps.ocp1.purplesky.cloud/auth/",
+    "auth-server-url": "https://keycloak-kai/auth/",
     "ssl-required": "external",
     "resource": "gaas-rest",
     "verify-token-audience": true,
@@ -9,7 +9,7 @@
     "cors-allowed-methods" : "POST, PUT, DELETE, GET",
     "cors-exposed-headers" : "WWW-Authenticate",
     "credentials": {
-      "secret": "fb6eb8b3-7bb2-4fbf-b244-b9f664b7844a"
+      "secret": "12ac2d1d-0a33-444f-be44-0567c2612e42"
     },
     "confidential-port": 0,
     "policy-enforcer": {}

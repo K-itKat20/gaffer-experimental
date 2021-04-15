@@ -8,14 +8,10 @@ import { StylesProvider } from "@material-ui/styles";
 import GlobalStyles from "../src/components/GlobalStyles";
 import "./styles/_App.scss";
 import Keycloak from "keycloak-js";
-import { RestClient } from "./rest/clients/rest-client";
+import KeyCloakService  from "./rest/key-cloak-service";
 
-// eslint-disable-next-line new-cap
-const keycloak: Keycloak.KeycloakInstance = Keycloak();
-keycloak.init({ onLoad: "login-required" })
-  .success(() => {
-RestClient.setJwtToken(keycloak.token)
-ReactDOM.render(
+
+const app = () =>  ReactDOM.render(
     <React.StrictMode>
         <StylesProvider injectFirst>
             <GlobalStyles />
@@ -26,8 +22,10 @@ ReactDOM.render(
         </StylesProvider>
     </React.StrictMode>,
     document.getElementById("root")
-)})
-.error((error) => console.log(error));
+);
+
+
+KeyCloakService.initKeycloak(app);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
