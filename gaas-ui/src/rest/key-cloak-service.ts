@@ -9,7 +9,6 @@ const initKeycloak = (onAuthenticatedCallback:any) => {
       .error((error) => console.log(error));
 };
 
-
 const doLogin = _kc.login;
 
 const doLogout = _kc.logout;

@@ -11,11 +11,7 @@ export interface IApiResponse<T = any> {
 }
 
 export class RestClient<T> {
-    private static jwtToken: string | undefined;
 
-    public static setJwtToken(jwtToken: string | undefined) {
-        this.jwtToken = jwtToken;
-    }
 
     private url: string;
     private method: Method;

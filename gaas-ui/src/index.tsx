@@ -7,9 +7,7 @@ import { CssBaseline } from "@material-ui/core";
 import { StylesProvider } from "@material-ui/styles";
 import GlobalStyles from "../src/components/GlobalStyles";
 import "./styles/_App.scss";
-import Keycloak from "keycloak-js";
 import KeyCloakService  from "./rest/key-cloak-service";
-
 
 const app = () =>  ReactDOM.render(
     <React.StrictMode>

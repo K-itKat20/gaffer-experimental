@@ -9,7 +9,7 @@
     "cors-allowed-methods" : "POST, PUT, DELETE, GET",
     "cors-exposed-headers" : "WWW-Authenticate",
     "credentials": {
-      "secret": "12ac2d1d-0a33-444f-be44-0567c2612e42"
+      "secret": "12ac2d1d-0a33-444f-be44-0567c2612e2"
     },
     "confidential-port": 0,
     "policy-enforcer": {}

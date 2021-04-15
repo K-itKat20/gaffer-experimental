@@ -117,8 +117,6 @@ const NavigationAppbar: React.FC = (props: any) => {
 
     const buildUsername = () => (username.includes("@") ? username.slice(0, username.indexOf("@")) : username);
 
-     
-
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -137,7 +135,6 @@ const NavigationAppbar: React.FC = (props: any) => {
                 </Button>
                 </Toolbar>
             </AppBar>
-
 
             <nav className={classes.drawer}>
                 <Drawer
