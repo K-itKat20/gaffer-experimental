@@ -46,6 +46,8 @@ public class AccumuloStoreType implements StoreType {
             final GafferSpec gafferSpec = super.build();
             gafferSpec.putNestedObject(new Gson().toJson(graph.getSchema()), SCHEMA_FILE_KEY);
             gafferSpec.putNestedObject(true, "accumulo", "enabled");
+            gafferSpec.putNestedObject("user", "accumulo" , "user");
+            gafferSpec.putNestedObject("password","accumulo" , "password");
             return gafferSpec;
         }
     }
