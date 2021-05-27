@@ -1,6 +1,7 @@
 import React, {ReactElement} from "react";
-import { Box, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select } from "@material-ui/core";
 import { StoreType } from "../../domain/store-type";
+import {GetStoreTypesRepo} from "../../rest/repositories/get-store-types-repo";
 
 interface IProps {
     value: StoreType;
@@ -10,7 +11,16 @@ interface IProps {
 export default function StoreTypeSelect(props: IProps): ReactElement {
     
     const { value, onChange } = props;
-
+    const [storeTypes, setStoretypes] = React.useState([]);
+    async function getStoreTypes(): Promise<Array<string>> {
+        let storeTypes: Array<string>;
+        try {
+            storeTypes = await new GetStoreTypesRepo().get();
+        } catch(e) {
+            storeTypes = [];
+        }
+        return storeTypes;
+    }
     return (
             <Grid item xs={12} id={"storetype-select-grid"} aria-label="store-type-grid" >
                 <FormControl
@@ -35,15 +45,12 @@ export default function StoreTypeSelect(props: IProps): ReactElement {
                         onChange={(event) => onChange(event.target.value as StoreType)
                         }
                     >
-                        <MenuItem value={StoreType.MAPSTORE} aria-label="mapstore-menu-item"
-                                  id="mapstore-menu-item" aria-labelledby={"storetype-select-label"}
-                        >
-                            Map Store
-                        </MenuItem>
-                        <MenuItem value={StoreType.ACCUMULO} aria-label="accumulo-menu-item" id="accumulo-menu-item" aria-labelledby={"storetype-select-label"}>Accumulo</MenuItem>
-                        <MenuItem value={StoreType.FEDERATED_STORE} aria-label="federated-menu-item" id="federated-menu-item" aria-labelledby={"storetype-select-label"}>
-                            Federated Store
-                        </MenuItem>
+                        {storeTypes.map((store: string) =>
+                            <MenuItem value={store} aria-label={store + "-menu-item"}
+                                      id={store + "-menu-item"} aria-labelledby={"storetype-select-label"}
+                            >
+                                store
+                            </MenuItem>)}
                     </Select>
                 </FormControl>
             </Grid>

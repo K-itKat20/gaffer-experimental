@@ -70,6 +70,11 @@ export class RestClient<T> {
         this.headers = { Authorization: "Bearer " + RestClient.jwtToken };
         return this;
     }
+    public storeTypes(): RestClient<T> {
+        this.url = "/storetypes";
+        this.headers = { Authorization: "Bearer " + RestClient.jwtToken };
+        return this;
+    }
 
     public authentication(pathVariable?: string): RestClient<T> {
         const _pathVariable = pathVariable ? `/${pathVariable}` : "";

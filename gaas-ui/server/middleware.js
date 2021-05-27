@@ -164,6 +164,15 @@ app.get("/namespaces", (req, res) => {
         res.status(403).end();
     }
 });
+app.get("/storetypes", (req, res) => {
+    try {
+        jwt.verify(req.get("Authorization"), jwtSecret, () => {
+            res.status(200).send(["accumuloStore", "mapStore", "federatedStore", "proxyStore"]);
+        });
+    } catch (e) {
+        res.status(403).end();
+    }
+});
 
 app.get("/up/graph/status", (req, res) => {
     console.log(req.url)
