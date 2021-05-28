@@ -96,10 +96,9 @@ export default class AddGraph extends React.Component<{}, IState> {
     this.getStoreTypes();
   }
   private async getStoreTypes() {
-    let stores: Array<string>;
     try {
-      stores = await new GetStoreTypesRepo().get();
-      this.setState({storeTypes: stores});
+      const storeTypes = await new GetStoreTypesRepo().getAll();
+      this.setState({storeTypes, outcomeMessage: ""});
       console.log(this.state.storeTypes);
     } catch(e) {
       this.setState({

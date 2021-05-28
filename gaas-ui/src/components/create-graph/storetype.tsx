@@ -1,7 +1,6 @@
 import React, {ReactElement} from "react";
 import { Box, FormControl, Grid, InputLabel, MenuItem, Select } from "@material-ui/core";
 import { StoreType } from "../../domain/store-type";
-import {GetStoreTypesRepo} from "../../rest/repositories/get-store-types-repo";
 
 interface IProps {
     value: StoreType;
@@ -42,7 +41,7 @@ export default function StoreTypeSelect(props: IProps): ReactElement {
                             <MenuItem value={store} aria-label={store + "-menu-item"}
                                       id={store + "-menu-item"} aria-labelledby={"storetype-select-label"}
                             >
-                                store
+                                {store}
                             </MenuItem>)}
                     </Select>
                 </FormControl>
