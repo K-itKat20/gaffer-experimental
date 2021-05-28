@@ -13,7 +13,4 @@ export interface IAllNameSpacesResponse extends Array<string> {}
 export interface IGraphStatusResponse {
     status: string;
 }
-export interface IStoreTypesResponse {
-    storeTypes: Array<string>
-    
-}
+export interface IStoreTypesResponse extends Array<string> {}

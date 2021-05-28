@@ -6,21 +6,14 @@ import {GetStoreTypesRepo} from "../../rest/repositories/get-store-types-repo";
 interface IProps {
     value: StoreType;
     onChange(storeType: StoreType): void;
+    storeTypes: string[];
 }
 
 export default function StoreTypeSelect(props: IProps): ReactElement {
     
     const { value, onChange } = props;
-    const [storeTypes, setStoretypes] = React.useState([]);
-    async function getStoreTypes(): Promise<Array<string>> {
-        let storeTypes: Array<string>;
-        try {
-            storeTypes = await new GetStoreTypesRepo().get();
-        } catch(e) {
-            storeTypes = [];
-        }
-        return storeTypes;
-    }
+
+
     return (
             <Grid item xs={12} id={"storetype-select-grid"} aria-label="store-type-grid" >
                 <FormControl
@@ -45,7 +38,7 @@ export default function StoreTypeSelect(props: IProps): ReactElement {
                         onChange={(event) => onChange(event.target.value as StoreType)
                         }
                     >
-                        {storeTypes.map((store: string) =>
+                        {props.storeTypes.map((store: string) =>
                             <MenuItem value={store} aria-label={store + "-menu-item"}
                                       id={store + "-menu-item"} aria-labelledby={"storetype-select-label"}
                             >

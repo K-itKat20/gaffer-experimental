@@ -36,6 +36,7 @@ import SchemaInput from "./schema-inputs";
 import StoreTypeSelect from "./storetype";
 import AddProxyGraphInput from "./add-proxy-graph-input";
 import ProxyGraphsTable from "./proxy-graphs-table";
+import {GetStoreTypesRepo} from "../../rest/repositories/get-store-types-repo";
 
 interface IState {
   graphId: string;
@@ -55,6 +56,7 @@ interface IState {
   selectedGraphs: string[];
   outcome: AlertType | undefined;
   outcomeMessage: string;
+  storeTypes: string[];
 }
 
 const Transition = React.forwardRef(
@@ -85,11 +87,25 @@ export default class AddGraph extends React.Component<{}, IState> {
       selectedGraphs: [],
       outcome: undefined,
       outcomeMessage: "",
+      storeTypes: [],
     };
   }
 
   public async componentDidMount() {
     this.getGraphs();
+    this.getStoreTypes();
+  }
+  private async getStoreTypes() {
+    let stores: Array<string>;
+    try {
+      stores = await new GetStoreTypesRepo().get();
+      this.setState({storeTypes: stores});
+      console.log(this.state.storeTypes);
+    } catch(e) {
+      this.setState({
+        outcomeMessage: `Failed to get all Store Types. ${e.toString()}`,
+      });
+    }
   }
 
   private async getGraphs() {
@@ -255,7 +271,7 @@ export default class AddGraph extends React.Component<{}, IState> {
                     justify="flex-end"
                     alignItems="center"
                   />
-                  <StoreTypeSelect aria-label="store-type-select"
+                  <StoreTypeSelect aria-label="store-type-select" storeTypes={this.state.storeTypes}
                     value={this.state.storeType}
                     onChange={(storeType) => this.setState({ storeType })}
                   />
