@@ -211,9 +211,17 @@ describe("Integration with GetAllGraphIds repo", () => {
         await act(async() => {
             component = mount(<ViewGraph/>);
         });
+        // await act(async() => {
+        //     await mockGetGraphUrlsRepoToReturn(["test.url", "test2.url"]);
+        // });
+        // await component.update();
+        // await component.update();
+        // await component.update();
         await act(async() => {
             await mockGetAllGraphIdsRepoToReturn(["accumulo-graph-1", "accumulo-graph-2"]);
         });
+
+        await component.update();
         await component.update();
         await component.update();
         await clickExpandRow(component);
@@ -239,6 +247,9 @@ describe("Integration with GetAllGraphIds repo", () => {
         });
         await act(async() => {
             await mockGetAllGraphIdsRepoToReturn([]);
+        });
+        await act(async() => {
+            await mockGetGraphUrlsRepoToReturn(["test.url", "test2.url"]);
         });
 
         await component.update();
