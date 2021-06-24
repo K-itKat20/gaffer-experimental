@@ -26,6 +26,7 @@ import WarningRoundedIcon from "@material-ui/icons/WarningRounded";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
+import {GetGraphUrlsRepo} from "../../rest/repositories/gaffer/get-graph-urls-repo";
 
 interface IProps {
     graphs: Graph [];
@@ -112,10 +113,13 @@ function MainGraphTableRow(props: IGraphRow) {
     const classes = useStyles();
     const [rowIsExpanded, setRowIsExpanded] = React.useState(false);
     const [allGraphIdsText, setAllGraphIdsText] = React.useState<string>("");
+    const [allGraphUrlsText, setAllGraphUrlsText] = React.useState<string>("");
 
     useEffect(() => {
         if (federatedStores.includes(graph.getConfigName())) {
             getAllGraphIds();
+            getGraphUrls();
+
         }
     });
 
@@ -125,6 +129,15 @@ function MainGraphTableRow(props: IGraphRow) {
             setAllGraphIdsText(allGraphIds.length !== 0 ? "Federated Graphs: " + allGraphIds.join(", ") : "No Federated Graphs");
         } catch (e) {
             setAllGraphIdsText(`Federated Graphs: [GetAllGraphIds Operation - ${e}]`);
+        }
+    }
+
+    async function getGraphUrls() {
+        try {
+            const allGraphUrls: string[] = await new GetGraphUrlsRepo().get(graph.getUrl());
+            setAllGraphUrlsText(allGraphUrls.length !== 0 ? "Federated Graph URLs: " + allGraphUrls.join(", ") : "No Federated Graph URLs");
+        } catch (e) {
+            setAllGraphUrlsText(`Federated Graph URLs: [GetGraphUrls Operation - ${e}]`);
         }
     }
 
@@ -171,9 +184,17 @@ function MainGraphTableRow(props: IGraphRow) {
                                                    scope="row">Description: {graph.getDescription()}</TableCell>
                                     </TableRow>
                                     {federatedStores.includes(graph.getConfigName()) &&
-                                    <TableRow id={"federated-graph-ids-" + index} aria-label={"federated-graph-ids"}>
-                                        <TableCell component="th" scope="row">{allGraphIdsText}</TableCell>
-                                    </TableRow>}
+                                    <div>
+                                        <TableRow id={"federated-graph-ids-" + index}
+                                                  aria-label={"federated-graph-ids"}>
+                                            <TableCell component="th" scope="row">{allGraphIdsText}</TableCell>
+                                        </TableRow>
+                                        <TableRow id={"federated-graph-urls-" + index}
+                                                  aria-label={"federated-graph-ids"}>
+                                            <TableCell component="th" scope="row">{allGraphUrlsText}</TableCell>
+                                        </TableRow>
+                                    </div>
+                                    }
                                 </TableBody>
                             </Table>
                         </Box>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import {IStoreTypes, IStoreTypesResponse} from "../../../src/rest/http-message-interfaces/response-interfaces";
+import { IStoreTypesResponse} from "../../../src/rest/http-message-interfaces/response-interfaces";
+import {IStoreTypes} from "../../../src/rest/repositories/get-store-types-repo";
 import { GetStoreTypesRepo } from "../../../src/rest/repositories/get-store-types-repo";
 import { RestApiError } from "../../../src/rest/RestApiError";
 

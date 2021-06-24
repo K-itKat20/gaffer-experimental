@@ -17,6 +17,7 @@ export interface IGraphStatusResponse {
 }
 
 export interface IGetAllGraphIdsResponse extends Array<string> {}
+export interface IGetGraphUrlsResponse extends Array<string> {}
 
 export interface IStoreTypesResponse {
     storeTypes: Array<{

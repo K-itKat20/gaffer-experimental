@@ -6,15 +6,17 @@ import {Graph} from "../../../src/domain/graph";
 import {DeleteGraphRepo} from "../../../src/rest/repositories/delete-graph-repo";
 import {RestApiError} from "../../../src/rest/RestApiError";
 import {GraphType} from "../../../src/domain/graph-type";
-import {IStoreTypes} from "../../../src/rest/http-message-interfaces/response-interfaces";
+import {IStoreTypes} from "../../../src/rest/repositories/get-store-types-repo";
 import {GetStoreTypesRepo} from "../../../src/rest/repositories/get-store-types-repo";
 import {GetAllGraphIdsRepo} from "../../../src/rest/repositories/gaffer/get-all-graph-ids-repo";
 import {act} from "@testing-library/react";
+import {GetGraphUrlsRepo} from "../../../src/rest/repositories/gaffer/get-graph-urls-repo";
 
 jest.mock("../../../src/rest/repositories/get-all-graphs-repo");
 jest.mock("../../../src/rest/repositories/delete-graph-repo");
 jest.mock("../../../src/rest/repositories/get-store-types-repo");
 jest.mock("../../../src/rest/repositories/gaffer/get-all-graph-ids-repo");
+jest.mock("../../../src/rest/repositories/gaffer/get-graph-urls-repo");
 
 afterEach(() => jest.resetAllMocks());
 
@@ -212,7 +214,6 @@ describe("Integration with GetAllGraphIds repo", () => {
         await act(async() => {
             await mockGetAllGraphIdsRepoToReturn(["accumulo-graph-1", "accumulo-graph-2"]);
         });
-
         await component.update();
         await component.update();
         await clickExpandRow(component);
@@ -299,6 +300,117 @@ describe("Integration with GetAllGraphIds repo", () => {
     });
 
 });
+describe("Integration with GetGraphUrlsRepo", ()=> {
+    let component: ReactWrapper;
+    afterEach(() => {
+        component.unmount();
+    });
+    it("should display federated graph ids as a list of strings", async() => {
+        await mockGetStoreTypesRepoToReturn({
+            storeTypes: [
+                "accumulo",
+                "mapStore",
+                "proxy",
+                "proxyNoContextRoot"
+            ],
+            federatedStoreTypes: [
+                "federated"
+            ]
+        });
+        await mockGetGraphsToReturn([new Graph("apples", "ACTIVE", "http://apples.graph", "UP", "federated", GraphType.GAAS_GRAPH), new Graph("pears", "DELETION IN PROGRESS", "http://pears.graph", "UP", "mapStore", GraphType.GAAS_GRAPH)]);
+        await act(async() => {
+            component = mount(<ViewGraph/>);
+        });
+        await act(async() => {
+            await mockGetGraphUrlsRepoToReturn(["test.url", "test2.url"]);
+        });
+
+        await component.update();
+        await component.update();
+        await clickExpandRow(component);
+        expect(component.find("tr#federated-graph-urls-0").text()).toBe(
+            "Federated Graph URLs: test.url, test2.url"
+        );
+    });
+    it("should not display any graph ids when GetGraphUrlsRepo returns and empty array", async() => {
+        await mockGetStoreTypesRepoToReturn({
+            storeTypes: [
+                "accumulo",
+                "mapStore",
+                "proxy",
+                "proxyNoContextRoot"
+            ],
+            federatedStoreTypes: [
+                "federated"
+            ]
+        });
+        await mockGetGraphsToReturn([new Graph("apples", "ACTIVE", "http://apples.graph", "UP", "federated", GraphType.GAAS_GRAPH), new Graph("pears", "DELETION IN PROGRESS", "http://pears.graph", "UP", "mapStore", GraphType.GAAS_GRAPH)]);
+        await act(async() => {
+            component = mount(<ViewGraph/>);
+        });
+        await act(async() => {
+            await mockGetGraphUrlsRepoToReturn([]);
+        });
+
+        await component.update();
+        await component.update();
+        await clickExpandRow(component);
+        expect(component.find("tr#federated-graph-urls-0").text()).toBe(
+            "No Federated Graph URLs"
+        );
+    });
+    it("should display an error if GetGraphUrlsRepo throws an error when called", async() => {
+        await act(async() => {
+            mockGetGraphUrlsRepoThrowsError(() => {
+                throw new RestApiError("Server Error", "Timeout exception");
+            });
+
+        });
+        mockGetStoreTypesRepoToReturn({
+            storeTypes: [
+                "accumulo",
+                "mapStore",
+                "proxy",
+                "proxyNoContextRoot"
+            ],
+            federatedStoreTypes: [
+                "federated"
+            ]
+        });
+        mockGetGraphsToReturn([new Graph("apples", "ACTIVE", "http://apples.graph", "UP", "federated", GraphType.GAAS_GRAPH)]);
+        component = mount(<ViewGraph/>);
+
+        await component.update();
+        await component.update();
+        await component.update();
+
+        clickExpandRow(component);
+        expect(component.find("tr#federated-graph-urls-0").text()).toBe(
+            "Federated Graph URLs: [GetGraphUrls Operation - Server Error: Timeout exception]"
+        );
+    });
+    it("should not display the row and execute GetGraphUrlsRepo if graph is not Federated Store", async() => {
+        await mockGetStoreTypesRepoToReturn({
+            storeTypes: [
+                "accumulo",
+                "mapStore",
+                "proxy",
+                "proxyNoContextRoot"
+            ],
+            federatedStoreTypes: [
+                "federated"
+            ]
+        });
+        await mockGetGraphsToReturn([new Graph("apples", "ACTIVE", "http://apples.graph", "UP", "mapStore", GraphType.GAAS_GRAPH), new Graph("pears", "DELETION IN PROGRESS", "http://pears.graph", "UP", "mapStore", GraphType.GAAS_GRAPH)]);
+        await act(async() => {component = mount(<ViewGraph/>);})
+
+        await component.update();
+        await component.update();
+        await clickExpandRow(component);
+        expect(component.find("tr#federated-graph-urls-0").length).toBe(0);
+    });
+
+})
 describe("Integration with GetStoreTypes Repo", () => {
     let component: ReactWrapper;
     afterEach(()=>  component.unmount())
@@ -338,6 +450,15 @@ async function mockGetAllGraphIdsRepoToReturn(graphIds: string[]) {
         get: () =>
             new Promise((resolve, reject) => {
                 resolve(graphIds);
+            }),
+    }));
+}
+async function mockGetGraphUrlsRepoToReturn(graphUrls: string[]) {
+    // @ts-ignore
+    GetGraphUrlsRepo.mockImplementationOnce(() => ({
+        get: () =>
+            new Promise((resolve, reject) => {
+                resolve(graphUrls);
             }),
     }));
 }
@@ -388,6 +509,10 @@ async function mockGetAllGraphIdsRepoThrowsError(f: () => void) {
     GetAllGraphIdsRepo.mockImplementationOnce(() => ({
         get: f,
     }));
-
+}async function mockGetGraphUrlsRepoThrowsError(f: () => void) {
+    // @ts-ignore
+    GetGraphUrlsRepo.mockImplementationOnce(() => ({
+        get: f,
+    }));
 }
 
