@@ -117,29 +117,27 @@ function MainGraphTableRow(props: IGraphRow) {
 
     useEffect(() => {
         if (federatedStores.includes(graph.getConfigName())) {
-            getAllGraphIds();
-            getGraphUrls();
-
+            getAllGraphIdsAndURLs();
+            //getGraphUrls();
         }
     });
 
-    async function getAllGraphIds() {
+    async function getAllGraphIdsAndURLs() {
         try {
             const allGraphIds: string[] = await new GetAllGraphIdsRepo().get(graph.getUrl());
             setAllGraphIdsText(allGraphIds.length !== 0 ? "Federated Graphs: " + allGraphIds.join(", ") : "No Federated Graphs");
         } catch (e) {
             setAllGraphIdsText(`Federated Graphs: [GetAllGraphIds Operation - ${e}]`);
         }
-    }
-
-    async function getGraphUrls() {
         try {
             const allGraphUrls: string[] = await new GetGraphUrlsRepo().get(graph.getUrl());
             setAllGraphUrlsText(allGraphUrls.length !== 0 ? "Federated Graph URLs: " + allGraphUrls.join(", ") : "No Federated Graph URLs");
-        } catch (e) {
-            setAllGraphUrlsText(`Federated Graph URLs: [GetGraphUrls Operation - ${e}]`);
+        } catch (ex) {
+            setAllGraphUrlsText(`Federated Graph URLs: [GetGraphUrls Operation - ${ex}]`);
+            console.log(allGraphUrlsText);
         }
     }
+
 
     return (
         <React.Fragment>

@@ -211,14 +211,12 @@ describe("Integration with GetAllGraphIds repo", () => {
         await act(async() => {
             component = mount(<ViewGraph/>);
         });
-        // await act(async() => {
-        //     await mockGetGraphUrlsRepoToReturn(["test.url", "test2.url"]);
-        // });
-        // await component.update();
-        // await component.update();
-        // await component.update();
+    
         await act(async() => {
             await mockGetAllGraphIdsRepoToReturn(["accumulo-graph-1", "accumulo-graph-2"]);
+        });
+        await act(async() => {
+            await mockGetGraphUrlsRepoToReturn(["test.url", "test2.url"]);
         });
 
         await component.update();
@@ -377,6 +375,7 @@ describe("Integration with GetGraphUrlsRepo", ()=> {
             });
 
         });
+    
         mockGetStoreTypesRepoToReturn({
             storeTypes: [
                 "accumulo",
@@ -391,9 +390,13 @@ describe("Integration with GetGraphUrlsRepo", ()=> {
         mockGetGraphsToReturn([new Graph("apples", "ACTIVE", "http://apples.graph", "UP", "federated", GraphType.GAAS_GRAPH)]);
         component = mount(<ViewGraph/>);
 
+        await act(async() => {
+            await mockGetAllGraphIdsRepoToReturn([]);
+        }); 
+
         await component.update();
-        await component.update();
-        await component.update();
+        //await component.update();
+        //await component.update();
 
         clickExpandRow(component);
         expect(component.find("tr#federated-graph-urls-0").text()).toBe(
