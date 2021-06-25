@@ -134,7 +134,6 @@ function MainGraphTableRow(props: IGraphRow) {
             setAllGraphUrlsText(allGraphUrls.length !== 0 ? "Federated Graph URLs: " + allGraphUrls.join(", ") : "No Federated Graph URLs");
         } catch (ex) {
             setAllGraphUrlsText(`Federated Graph URLs: [GetGraphUrls Operation - ${ex}]`);
-            console.log(allGraphUrlsText);
         }
     }
 

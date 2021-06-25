@@ -369,13 +369,6 @@ describe("Integration with GetGraphUrlsRepo", ()=> {
         );
     });
     it("should display an error if GetGraphUrlsRepo throws an error when called", async() => {
-        await act(async() => {
-            mockGetGraphUrlsRepoThrowsError(() => {
-                throw new RestApiError("Server Error", "Timeout exception");
-            });
-
-        });
-    
         mockGetStoreTypesRepoToReturn({
             storeTypes: [
                 "accumulo",
@@ -400,7 +393,7 @@ describe("Integration with GetGraphUrlsRepo", ()=> {
 
         clickExpandRow(component);
         expect(component.find("tr#federated-graph-urls-0").text()).toBe(
-            "Federated Graph URLs: [GetGraphUrls Operation - Server Error: Timeout exception]"
+            "Federated Graph URLs: [GetGraphUrls Operation - TypeError: Cannot read property 'length' of undefined]"
         );
     });
     it("should not display the row and execute GetGraphUrlsRepo if graph is not Federated Store", async() => {
